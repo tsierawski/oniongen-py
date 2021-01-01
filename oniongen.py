@@ -65,6 +65,9 @@ if __name__ == "__main__":
             # Print
             print("PRIVATE KEY    " + str(priv_key.encode(encoder=nacl.encoding.HexEncoder)))
             print("PUBLIC KEY     " + str(pub_key.encode(encoder=nacl.encoding.HexEncoder)))
-            print(".onion ADDRESS " + onion + "\n")
+            print(".onion ADDRESS " + onion)
 
             vanity_onions += 1
+
+            if vanity_onions < int(sys.argv[1]):
+                print("\n")
