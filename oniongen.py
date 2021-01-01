@@ -1,10 +1,12 @@
+#!/usr/bin/env python3
+
 '''
     
     oniongen-py
 
     v3 .onion vanity URL generator written in Python3
 
-    This is just a toy implementation, if you need to generate .onion
+    This is just a toy program, if you need to generate .onion
     url you will be better off with another tool.
 
     ---
@@ -34,25 +36,35 @@
 
 '''
 
-
 from nacl.signing import SigningKey, VerifyKey
+import nacl.encoding
 import hashlib
 import base64
+import sys
+import re
 
 if __name__ == "__main__":
 
-    # Generate key pair
-    priv_key = SigningKey.generate()
-    pub_key = priv_key.verify_key
+    vanity_onions = 0
+    
+    while(vanity_onions < int(sys.argv[1])):
 
-    # Checksum
-    checksum = hashlib.sha3_256(b".onion checksum" + bytes(pub_key) + b"\x03")
+        # Generate key pair
+        priv_key = SigningKey.generate()
+        pub_key = priv_key.verify_key
 
-    # Onion address
-    onion = (base64.b32encode(bytes(pub_key) + checksum.digest()[:2] + b'\x03')).decode("utf-8").lower() + ".onion"
+        # Checksum
+        checksum = hashlib.sha3_256(b".onion checksum" + bytes(pub_key) + b"\x03")
 
-    print("Private key:")
-    print(priv_key)
-    print(".onion address:")
-    print(onion)
-    print("---")
+        # Onion address
+        onion = (base64.b32encode(bytes(pub_key) + checksum.digest()[:2] + b'\x03')).decode("utf-8").lower() + ".onion"
+
+        # Check regular expression
+        if re.match(sys.argv[2], onion):
+
+            # Print
+            print("PRIVATE KEY    " + str(priv_key.encode(encoder=nacl.encoding.HexEncoder)))
+            print("PUBLIC KEY     " + str(pub_key.encode(encoder=nacl.encoding.HexEncoder)))
+            print(".onion ADDRESS " + onion + "\n")
+
+            vanity_onions += 1
