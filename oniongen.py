@@ -43,11 +43,27 @@ import base64
 import sys
 import re
 import os
+import time
+
+# Eye candy
+def printProgressBar(value, target, proc):
+    size = 10
+    progress = value / int(target)
+    sys.stdout.write('\r')
+    bar = '▒' * int(size * progress)
+    bar += ' ' * int(size * (1-progress))
+    sys.stdout.write(f"{bar:{size}s} {int(100 * progress)}% {proc} addresses tested")
+    sys.stdout.flush()
 
 if __name__ == "__main__":
 
+    # Time start
+    start_time = time.process_time()
+
+    # Stats
     vanity_onions = 0
-    
+    processed     = 0
+
     while(vanity_onions < int(sys.argv[1])):
 
         # Generate key pair
@@ -87,6 +103,16 @@ if __name__ == "__main__":
                 f.close()
 
                 # Print
-                print(onion)
+                print("\r" + onion)
 
             vanity_onions += 1
+
+        processed += 1
+
+        if(vanity_onions < int(sys.argv[1])):
+            # Print Eye Candy
+            printProgressBar(vanity_onions, sys.argv[1], processed)
+
+    elapsed_time = time.process_time() - start_time
+
+    print(f"{vanity_onions} matching entries from {processed} generated .onion URLs found in {elapsed_time}s")
