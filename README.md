@@ -20,8 +20,8 @@ This script uses PyNaCl.
             hostname
             hs_ed25519_public_key
             hs_ed25519_secret_key
-        inside "onions" folder
-        
+        to "onions" folder
+
 ## Example
 
     python oniongen.py 5 abc
