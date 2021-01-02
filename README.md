@@ -11,14 +11,20 @@ This script uses PyNaCl.
 
 ## Usage
 
-    python oniongen.py <number> <regex> > file.txt
+    python oniongen.py <number> <regex>
 
         number  number of addresses to find
         regex   pattern addresses should match
 
+        program saves
+            hostname
+            hs_ed25519_public_key
+            hs_ed25519_secret_key
+        inside "onions" folder
+        
 ## Example
 
-    python oniongen.py 5 abc > onion_adrs.txt
+    python oniongen.py 5 abc
 
 ## References
 

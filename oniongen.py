@@ -42,6 +42,7 @@ import hashlib
 import base64
 import sys
 import re
+import os
 
 if __name__ == "__main__":
 
@@ -62,12 +63,30 @@ if __name__ == "__main__":
         # Check regular expression
         if re.match(sys.argv[2], onion):
 
-            # Print
-            print("PRIVATE KEY    " + str(priv_key.encode(encoder=nacl.encoding.HexEncoder)))
-            print("PUBLIC KEY     " + str(pub_key.encode(encoder=nacl.encoding.HexEncoder)))
-            print(".onion ADDRESS " + onion)
+            # Check for "onions" folder
+            if not os.path.exists("onions"):
+                os.makedirs("onions")
 
+            # Check for vanity .onion
+            if not os.path.exists("onions/" + str(onion)):
+                os.makedirs("onions/"  +  onion)
+
+                # Save private key
+                f = open("onions/" + onion + "/hs_ed25519_secret_key", "w+")
+                f.write("== ed25519v1-secret: type0 ==\x00\x00\x00" + str(priv_key))
+                f.close()
+
+                # Save public key
+                f = open("onions/" + onion + "/hs_ed25519_public_key", "w+")
+                f.write("== ed25519v1-public: type0 ==\x00\x00\x00" + str(pub_key))
+                f.close()
+
+                # Save hostname
+                f = open("onions/" + onion + "/hostname", "w+")
+                f.write(onion)
+                f.close()
+
+                # Print
+                print(onion)
+                
             vanity_onions += 1
-
-            if vanity_onions < int(sys.argv[1]):
-                print("\n")
