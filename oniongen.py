@@ -72,13 +72,13 @@ if __name__ == "__main__":
                 os.makedirs("onions/"  +  onion)
 
                 # Save private key
-                f = open("onions/" + onion + "/hs_ed25519_secret_key", "w+")
-                f.write("== ed25519v1-secret: type0 ==\x00\x00\x00" + str(priv_key))
+                f = open("onions/" + onion + "/hs_ed25519_secret_key", "wb")
+                f.write(b"== ed25519v1-secret: type0 ==\x00\x00\x00" + bytes(priv_key))
                 f.close()
 
                 # Save public key
-                f = open("onions/" + onion + "/hs_ed25519_public_key", "w+")
-                f.write("== ed25519v1-public: type0 ==\x00\x00\x00" + str(pub_key))
+                f = open("onions/" + onion + "/hs_ed25519_public_key", "wb")
+                f.write(b"== ed25519v1-public: type0 ==\x00\x00\x00" + bytes(pub_key))
                 f.close()
 
                 # Save hostname
@@ -88,5 +88,5 @@ if __name__ == "__main__":
 
                 # Print
                 print(onion)
-                
+
             vanity_onions += 1
