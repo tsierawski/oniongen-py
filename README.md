@@ -2,6 +2,8 @@
 
 v3 .onion vanity URL generator written in Python3
 
+![oniongen-py animation](oniongen-py.gif)
+
 _This is just a toy program, if you need to generate .onion
 url you will be better off with another tool._
 
